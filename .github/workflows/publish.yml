@@ -20,9 +20,6 @@ jobs:
         with:
           node-version: '24'  # Required for npm 11.6.0+ with OIDC
           registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
-
-      - run: npm ci
 
       - name: Publish to NPM
         run: npm publish --provenance --access public

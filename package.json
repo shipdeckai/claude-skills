@@ -1,6 +1,6 @@
 {
   "name": "@shipdeckai/claude-skills",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A curated collection of Claude Code skills and plugins for AI-powered development workflows",
   "main": "index.js",
   "scripts": {

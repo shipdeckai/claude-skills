@@ -10,7 +10,7 @@
       "name": "image-gen",
       "source": {
         "source": "github",
-        "repo": "shipdeckai/image-gen"
+        "repo": "shipdeckai/image-gen#main"
       },
       "description": "AI image generation and editing across multiple providers (OpenAI, Stability, BFL, Gemini, and more)"
     }

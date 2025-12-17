@@ -1,10 +1,10 @@
 {
   "name": "image-gen",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "description": "AI-powered image generation CLI with multi-provider support",
-  "main": "dist/cli.js",
+  "main": "dist/cli.bundle.cjs",
   "bin": {
-    "image-gen": "dist/cli.js"
+    "image-gen": "dist/cli.bundle.cjs"
   },
   "type": "module",
   "scripts": {

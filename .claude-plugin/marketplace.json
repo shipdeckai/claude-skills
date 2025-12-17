@@ -8,10 +8,7 @@
   "plugins": [
     {
       "name": "image-gen",
-      "source": {
-        "source": "github",
-        "repo": "shipdeckai/image-gen#main"
-      },
+      "source": "./plugins/image-gen",
       "description": "AI image generation and editing across multiple providers (OpenAI, Stability, BFL, Gemini, and more)"
     }
   ]

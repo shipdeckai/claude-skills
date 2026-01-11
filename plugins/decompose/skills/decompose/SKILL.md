@@ -1,6 +1,6 @@
 ---
 name: decompose
-description: "Decompose PRDs into Ralph-ready tasks with dependencies. Use after creating a PRD with /prd to break it into context-window-sized tasks for autonomous execution. Triggers on: /decompose, decompose prd, break down prd, create tasks from prd, task breakdown, generate tasks. Creates task files in tasks/ directory ready for Ralph Loop."
+description: "Decompose PRDs into Ralph-ready tasks with dependencies. Use after creating a PRD with /prd to break it into context-window-sized tasks for autonomous execution. Triggers on: /decompose, decompose prd, break down prd, create tasks from prd, task breakdown, generate tasks. Creates task files in tasks/ directory ready for Ralph Loop. Supports --github-issues and --github-project flags."
 ---
 
 # Task Decomposer
@@ -14,6 +14,7 @@ Break PRDs into context-window-sized tasks with dependencies, ready for Ralph Lo
 3. Break into "right-sized" tasks (one context window each)
 4. Create dependency ordering
 5. Generate task files ready for Ralph Loop
+6. **Optionally:** Create GitHub Issues and/or Project items
 
 **Important:** Do NOT implement anything. Just create the task breakdown.
 
@@ -21,10 +22,20 @@ Break PRDs into context-window-sized tasks with dependencies, ready for Ralph Lo
 
 ## Input
 
-User provides path to PRD file:
+User provides path to PRD file with optional flags:
 ```
 /decompose tasks/prd-feature-name.md
+/decompose tasks/prd-feature-name.md --github-issues
+/decompose tasks/prd-feature-name.md --github-project "Project Name"
+/decompose tasks/prd-feature-name.md --github-issues --github-project "Project Name"
 ```
+
+**Flags:**
+| Flag | Effect |
+|------|--------|
+| (none) | Creates task files only (default) |
+| `--github-issues` | Also creates GitHub Issues with dependency links |
+| `--github-project "Name"` | Also adds issues to specified GitHub Project |
 
 If no file provided, ask:
 ```
@@ -277,6 +288,207 @@ Bad (vague):
 
 **For logic tasks:**
 - Include test command if tests exist
+
+---
+
+## GitHub Issues Integration (--github-issues)
+
+When the `--github-issues` flag is provided, create GitHub Issues for each task AFTER creating the task files.
+
+### Step 6a: Create Parent Issue
+
+First, create a parent/tracking issue for the entire feature:
+
+```bash
+gh issue create \
+  --title "[Feature] Feature Name" \
+  --body "## Overview
+Tracking issue for [Feature Name] implementation.
+
+**Source PRD:** tasks/prd-feature-name.md
+**Task Directory:** tasks/feature-name/
+
+## Tasks
+- [ ] #XX Task 01: Schema
+- [ ] #XX Task 02: Backend
+- [ ] #XX Task 03: Frontend
+- [ ] #XX Task 04: Tests
+
+## Progress
+Updated automatically as tasks complete." \
+  --label "feature,tracking"
+```
+
+### Step 6b: Create Task Issues with Dependencies
+
+For each task, create an issue that references:
+1. The task file location
+2. Blocking issues (dependencies)
+3. The parent tracking issue
+
+```bash
+# Task 01 (no dependencies)
+gh issue create \
+  --title "[Feature] 01: Schema - Add user tables" \
+  --body "## Task File
+\`tasks/feature-name/01-schema.md\`
+
+## Objective
+[One sentence from task file]
+
+## Dependencies
+None - this task can start immediately.
+
+## Acceptance Criteria
+- [ ] Migration created and runs successfully
+- [ ] Type check passes
+
+## Completion
+When done, close this issue and update the tracking issue.
+
+---
+*Part of #PARENT_ISSUE*" \
+  --label "feature,task"
+```
+
+```bash
+# Task 02 (depends on Task 01)
+gh issue create \
+  --title "[Feature] 02: Backend - Server actions" \
+  --body "## Task File
+\`tasks/feature-name/02-backend.md\`
+
+## Objective
+[One sentence from task file]
+
+## Dependencies
+> **Blocked by:** #TASK_01_ISSUE
+>
+> This task requires Task 01 (Schema) to be complete first.
+
+## Acceptance Criteria
+- [ ] Server actions implemented
+- [ ] Type check passes
+
+## Completion
+When done, close this issue and update the tracking issue.
+
+---
+*Part of #PARENT_ISSUE*" \
+  --label "feature,task"
+```
+
+### Dependency Expression in Issues
+
+GitHub doesn't have native dependency tracking, so express dependencies clearly:
+
+**In the issue body:**
+```markdown
+## Dependencies
+> **Blocked by:** #12, #13
+>
+> This task requires the following to complete first:
+> - #12 - Database schema
+> - #13 - API types
+```
+
+**In the parent issue (task list):**
+```markdown
+## Tasks (in dependency order)
+- [ ] #10 Schema (no deps)
+- [ ] #11 Backend (blocked by #10)
+- [ ] #12 Frontend (blocked by #11)
+- [ ] #13 Tests (blocked by #12)
+```
+
+### Output with GitHub Issues
+
+```
+Task breakdown complete!
+
+Created files:
+  tasks/feature-name/00-overview.md
+  tasks/feature-name/01-schema.md
+  tasks/feature-name/02-backend.md
+  tasks/feature-name/03-frontend.md
+  tasks/feature-name/04-tests.md
+
+Created GitHub Issues:
+  #100 [Feature] Feature Name (tracking)
+  #101 [Feature] 01: Schema
+  #102 [Feature] 02: Backend (blocked by #101)
+  #103 [Feature] 03: Frontend (blocked by #102)
+  #104 [Feature] 04: Tests (blocked by #103)
+
+Dependency order preserved in issue descriptions.
+```
+
+---
+
+## GitHub Projects Integration (--github-project)
+
+When `--github-project "Project Name"` is provided, add all created issues to the specified GitHub Project.
+
+**Requires:** `--github-issues` flag (issues must exist to add to project)
+
+### Step 7: Add Issues to Project
+
+After creating issues, add them to the project:
+
+```bash
+# Get project ID
+PROJECT_ID=$(gh project list --owner @me --format json | jq -r '.projects[] | select(.title=="Project Name") | .number')
+
+# Add each issue to the project
+gh project item-add $PROJECT_ID --owner @me --url https://github.com/OWNER/REPO/issues/101
+gh project item-add $PROJECT_ID --owner @me --url https://github.com/OWNER/REPO/issues/102
+gh project item-add $PROJECT_ID --owner @me --url https://github.com/OWNER/REPO/issues/103
+gh project item-add $PROJECT_ID --owner @me --url https://github.com/OWNER/REPO/issues/104
+```
+
+### Setting Up Project Fields for Dependencies
+
+If the project has custom fields, set them:
+
+```bash
+# If project has a "Status" field
+gh project item-edit --project-id $PROJECT_ID --id $ITEM_ID --field-id $STATUS_FIELD_ID --single-select-option-id $TODO_OPTION_ID
+
+# If project has a "Blocked By" text field (for dependency tracking)
+gh project item-edit --project-id $PROJECT_ID --id $ITEM_ID --field-id $BLOCKED_FIELD_ID --text "#101"
+```
+
+### Recommended Project Setup
+
+For best dependency tracking, create a project with these fields:
+
+| Field | Type | Purpose |
+|-------|------|---------|
+| Status | Single select | Todo, In Progress, Done |
+| Task Number | Number | 01, 02, 03... for ordering |
+| Blocked By | Text | Issue numbers this depends on |
+| Feature | Single select | Group tasks by feature |
+
+### Output with GitHub Project
+
+```
+Task breakdown complete!
+
+Created files:
+  tasks/feature-name/*.md (5 files)
+
+Created GitHub Issues:
+  #101-#104 (4 task issues + 1 tracking issue)
+
+Added to GitHub Project "My Project":
+  ✓ #100 [Feature] Feature Name
+  ✓ #101 [Feature] 01: Schema
+  ✓ #102 [Feature] 02: Backend
+  ✓ #103 [Feature] 03: Frontend
+  ✓ #104 [Feature] 04: Tests
+
+View project: https://github.com/users/USERNAME/projects/PROJECT_NUMBER
+```
 
 ---
 

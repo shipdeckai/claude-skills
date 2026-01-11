@@ -8,18 +8,18 @@ A curated collection of Claude Code skills and plugins for AI-powered developmen
 |-------|-------------|
 | [image-gen](plugins/image-gen) | AI image generation and editing across multiple providers |
 | [prd](plugins/prd) | AI-optimized PRD generator for feature planning |
-| [tasks](plugins/tasks) | PRD decomposer for Ralph-ready task files |
+| [decompose](plugins/decompose) | PRD decomposer for Ralph-ready task files |
 
-## PRD → Tasks → Ralph Loop Workflow
+## PRD → Decompose → Ralph Loop Workflow
 
-The `prd` and `tasks` skills work together with the `ralph-loop` plugin to enable autonomous feature development:
+The `prd` and `decompose` skills work together with the `ralph-loop` plugin to enable autonomous feature development:
 
 ```
-/prd "feature description"     → Creates AI-optimized PRD
+/prd "feature description"          → Creates AI-optimized PRD
         ↓
-/tasks tasks/prd-feature.md    → Decomposes into context-sized tasks
+/decompose tasks/prd-feature.md     → Decomposes into context-sized tasks
         ↓
-/ralph-loop "Execute task..."  → Autonomous execution
+/ralph-loop "Execute task..."       → Autonomous execution
 ```
 
 ## Installation

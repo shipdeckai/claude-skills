@@ -17,8 +17,8 @@
       "description": "AI-optimized PRD generator for feature planning. Creates structured requirements documents ready for AI task decomposition."
     },
     {
-      "name": "tasks",
-      "source": "./plugins/tasks",
+      "name": "decompose",
+      "source": "./plugins/decompose",
       "description": "PRD decomposer for Ralph-ready task files. Breaks PRDs into context-window-sized tasks with dependencies."
     }
   ]

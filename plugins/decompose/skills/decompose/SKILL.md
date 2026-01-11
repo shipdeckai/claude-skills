@@ -1,6 +1,6 @@
 ---
-name: tasks
-description: "Decompose PRDs into Ralph-ready tasks with dependencies. Use after creating a PRD with /prd to break it into context-window-sized tasks for autonomous execution. Triggers on: /tasks, decompose prd, break down prd, create tasks from prd, task breakdown, generate tasks. Creates task files in tasks/ directory ready for Ralph Loop."
+name: decompose
+description: "Decompose PRDs into Ralph-ready tasks with dependencies. Use after creating a PRD with /prd to break it into context-window-sized tasks for autonomous execution. Triggers on: /decompose, decompose prd, break down prd, create tasks from prd, task breakdown, generate tasks. Creates task files in tasks/ directory ready for Ralph Loop."
 ---
 
 # Task Decomposer
@@ -23,7 +23,7 @@ Break PRDs into context-window-sized tasks with dependencies, ready for Ralph Lo
 
 User provides path to PRD file:
 ```
-/tasks tasks/prd-feature-name.md
+/decompose tasks/prd-feature-name.md
 ```
 
 If no file provided, ask:

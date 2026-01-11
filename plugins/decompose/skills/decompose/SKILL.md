@@ -148,7 +148,7 @@ tasks/[feature-name]/
 Execute ALL tasks with a single Ralph Loop command:
 
 ```bash
-/ralph-loop "Execute ALL tasks from tasks/[feature-name]/ in dependency order.
+/ralph-loop:ralph-loop "Execute ALL tasks from tasks/[feature-name]/ in dependency order.
 
 INSTRUCTIONS:
 1. Read this file (00-overview.md) to understand the dependency graph
@@ -174,7 +174,7 @@ EXIT CONDITION:
 To run just one task:
 
 ```bash
-/ralph-loop "Execute tasks/[feature]/01-[task-name].md" --max-iterations 15 --completion-promise "TASK_01_COMPLETE"
+/ralph-loop:ralph-loop "Execute tasks/[feature]/01-[task-name].md" --max-iterations 15 --completion-promise "TASK_01_COMPLETE"
 ```
 ```
 
@@ -254,7 +254,7 @@ Dependency order:
 
 ## Run All Tasks (Autonomous Execution)
 
-/ralph-loop "Execute ALL tasks from tasks/[feature-name]/ in dependency order.
+/ralph-loop:ralph-loop "Execute ALL tasks from tasks/[feature-name]/ in dependency order.
 
 INSTRUCTIONS:
 1. Read 00-overview.md for the dependency graph
@@ -270,7 +270,7 @@ EXIT: Only output FEATURE_COMPLETE when ALL [N] tasks pass acceptance criteria."
 
 ## Run Single Task
 
-/ralph-loop "Execute tasks/[feature-name]/01-[task].md" --max-iterations 15 --completion-promise "TASK_01_COMPLETE"
+/ralph-loop:ralph-loop "Execute tasks/[feature-name]/01-[task].md" --max-iterations 15 --completion-promise "TASK_01_COMPLETE"
 ```
 
 ---

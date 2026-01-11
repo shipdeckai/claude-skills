@@ -1,0 +1,8 @@
+{
+  "name": "prd",
+  "description": "AI-optimized Product Requirements Document generator for Claude Code. Creates structured PRDs ready for AI task decomposition and Ralph Loop execution.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Merlin Rabens"
+  }
+}

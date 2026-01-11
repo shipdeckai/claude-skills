@@ -1,0 +1,8 @@
+{
+  "name": "tasks",
+  "description": "Decompose PRDs into Ralph-ready tasks with dependencies. Creates context-window-sized task files ready for autonomous execution via Ralph Loop.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Merlin Rabens"
+  }
+}

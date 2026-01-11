@@ -10,6 +10,16 @@
       "name": "image-gen",
       "source": "./plugins/image-gen",
       "description": "AI image generation and editing across multiple providers (OpenAI, Stability, BFL, Gemini, and more)"
+    },
+    {
+      "name": "prd",
+      "source": "./plugins/prd",
+      "description": "AI-optimized PRD generator for feature planning. Creates structured requirements documents ready for AI task decomposition."
+    },
+    {
+      "name": "tasks",
+      "source": "./plugins/tasks",
+      "description": "PRD decomposer for Ralph-ready task files. Breaks PRDs into context-window-sized tasks with dependencies."
     }
   ]
 }

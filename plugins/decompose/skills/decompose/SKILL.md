@@ -143,11 +143,38 @@ tasks/[feature-name]/
 | 03 | [Task name] | 02 | pending |
 | 04 | [Task name] | 03 | pending |
 
-## Execution
+## Run All Tasks (Autonomous)
 
-Run tasks sequentially with Ralph Loop:
+Execute ALL tasks with a single Ralph Loop command:
+
 ```bash
-/ralph-loop "Execute task from tasks/[feature]/01-*.md" --max-iterations 15 --completion-promise "TASK_01_COMPLETE"
+/ralph-loop "Execute ALL tasks from tasks/[feature-name]/ in dependency order.
+
+INSTRUCTIONS:
+1. Read this file (00-overview.md) to understand the dependency graph
+2. Check which tasks are complete by examining the codebase (migrations exist, files created, etc.)
+3. Find the NEXT incomplete task whose dependencies are satisfied
+4. Read that task file and implement ALL requirements
+5. Verify acceptance criteria (run typecheck, tests, etc.)
+6. After completing a task, log TASK_XX_COMPLETE and continue to the next task
+7. Repeat until ALL tasks are done
+
+SELF-HEALING:
+- Each iteration you see the current codebase state via git
+- If previous iteration made mistakes, fix them before continuing
+- If a task fails verification, fix the issues in the next iteration
+
+EXIT CONDITION:
+- Only output FEATURE_COMPLETE when ALL [N] tasks pass their acceptance criteria
+- Do NOT output FEATURE_COMPLETE until everything is verified working" --max-iterations [N×10] --completion-promise "FEATURE_COMPLETE"
+```
+
+## Run Single Task
+
+To run just one task:
+
+```bash
+/ralph-loop "Execute tasks/[feature]/01-[task-name].md" --max-iterations 15 --completion-promise "TASK_01_COMPLETE"
 ```
 ```
 
@@ -225,10 +252,25 @@ Dependency order:
 3. 03-[task] (depends: 02)
 4. 04-[task] (depends: 03)
 
-To execute with Ralph Loop:
-/ralph-loop "Execute task from tasks/[feature]/01-*.md" --max-iterations 15 --completion-promise "TASK_01_COMPLETE"
+## Run All Tasks (Autonomous Execution)
 
-Or run all sequentially - see tasks/[feature]/00-overview.md
+/ralph-loop "Execute ALL tasks from tasks/[feature-name]/ in dependency order.
+
+INSTRUCTIONS:
+1. Read 00-overview.md for the dependency graph
+2. Check which tasks are complete (look for existing code/migrations)
+3. Work on the NEXT incomplete task with satisfied dependencies
+4. Implement requirements, verify acceptance criteria
+5. Log TASK_XX_COMPLETE and continue to next task
+6. Repeat until ALL tasks done
+
+SELF-HEALING: Each iteration sees current codebase. Fix any mistakes from previous iterations.
+
+EXIT: Only output FEATURE_COMPLETE when ALL [N] tasks pass acceptance criteria." --max-iterations [N×10] --completion-promise "FEATURE_COMPLETE"
+
+## Run Single Task
+
+/ralph-loop "Execute tasks/[feature-name]/01-[task].md" --max-iterations 15 --completion-promise "TASK_01_COMPLETE"
 ```
 
 ---

@@ -265,7 +265,7 @@ export function selectProvider(
 
   // Check for speed keywords
   if (lower.includes('quick') || lower.includes('fast') || lower.includes('draft')) {
-    const speedProviders = ['FAL', 'GEMINI', 'DALLE'];
+    const speedProviders = ['FAL', 'GEMINI', 'DALLE', 'MODELSLAB'];
     for (const provider of speedProviders) {
       if (availableProviders.includes(provider)) {
         logger.info(`Selected ${provider} for speed-focused request`);
@@ -276,7 +276,7 @@ export function selectProvider(
 
   // Default to most versatile available provider (prioritize fallback chain order)
   // GEMINI preferred over OPENAI for better aspect ratio preservation and faster edits
-  const preferredOrder = ['GEMINI', 'OPENAI', 'STABILITY', 'BFL', 'LEONARDO', 'IDEOGRAM', 'FAL', 'REPLICATE'];
+  const preferredOrder = ['GEMINI', 'OPENAI', 'STABILITY', 'BFL', 'LEONARDO', 'IDEOGRAM', 'FAL', 'REPLICATE', 'MODELSLAB'];
   for (const provider of preferredOrder) {
     if (availableProviders.includes(provider)) {
       logger.info(`Using default provider: ${provider}`);

@@ -8,6 +8,9 @@ A curated collection of Claude Code skills and plugins for AI-powered developmen
 |-------|-------------|
 | [image-gen](plugins/image-gen) | AI image generation and editing across multiple providers |
 | [ralph-wiggum](https://github.com/shipdeckai/ralph-wiggum) | Iterative AI development loops - specs, prompts, and automation |
+| [x-twitter-scraper](https://github.com/Xquik-dev/x-twitter-scraper) | X research, exports, MCP workflows, webhooks, and confirmation-gated actions |
+
+Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.
 
 ## Installation
 

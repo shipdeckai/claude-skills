@@ -18,6 +18,14 @@
         "repo": "shipdeckai/ralph-wiggum"
       },
       "description": "Ralph Wiggum technique for iterative AI development loops - set up specs, prompts, and automation for autonomous coding sessions"
+    },
+    {
+      "name": "x-twitter-scraper",
+      "source": {
+        "source": "github",
+        "repo": "Xquik-dev/x-twitter-scraper"
+      },
+      "description": "Xquik API skill for public X/Twitter search, follower exports, social listening, MCP workflows, webhooks, and confirmation-gated actions"
     }
   ]
 }
